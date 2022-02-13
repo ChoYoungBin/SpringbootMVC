@@ -34,7 +34,7 @@ public class ResponseBodyController {
     }
 
     @GetMapping("/response-body-json-v1")
-    public ResponseEntity<HelloData> responbseBodyJsonV1() {
+    public ResponseEntity<HelloData> responseBodyJsonV1() {
         HelloData helloData = new HelloData();
         helloData.setUsername("userA");
 
