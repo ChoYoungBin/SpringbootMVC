@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -97,13 +98,36 @@ public class BasicItemController {
      * @return
      * @ModelAttribute까지도 생략가능
      */
-    @PostMapping("/add")
+/*    @PostMapping("/add")
     public String addItemV3(Item item) {
         itemRepository.save(item);
         // @ModelAttribute를 생략하면 Item을 RequestParam, Response 객체로 인식하고
         // Item -> item 으로 name을 자동생성까지 해준다.
 
         return "basic/item";
+    }*/
+    @PostMapping("/add")
+    public String addItemV5(Item item) {
+        itemRepository.save(item);
+
+        //PRG 해결
+        return "redirect:/basic/items/" + item.getId();
+    }
+
+    @GetMapping("/{itemId}/edit")
+    public String editForm(@PathVariable Long itemId, Model model) {
+        Item item = itemRepository.findBy(itemId);
+        model.addAttribute("item", item);
+
+        return "basic/editForm";
+    }
+
+    @PostMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+        itemRepository.update(itemId, item);
+
+        return "redirect:/basic/items/{itemId}";
+
     }
 
     /**
